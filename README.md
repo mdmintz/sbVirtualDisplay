@@ -1,5 +1,5 @@
 # sbVirtualDisplay
-A modified version of pyvirtualdisplay for optimized SeleniumBase performance.
+A modified version of [pyvirtualdisplay](https://github.com/ponty/PyVirtualDisplay) for optimized [SeleniumBase](https://github.com/seleniumbase/SeleniumBase) performance.
 
 ## Usage:
 
