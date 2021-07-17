@@ -70,9 +70,9 @@ setup(
     project_urls={
         "Changelog": "https://github.com/mdmintz/sbVirtualDisplay/releases",
         "Download": "https://pypi.org/project/sbvirtualdisplay/#files",
+        "SeleniumBase": "https://github.com/seleniumbase/SeleniumBase",
         "PyPI": "https://pypi.org/project/sbvirtualdisplay/",
         "Source": "https://github.com/mdmintz/sbVirtualDisplay",
-        "Documentation": "https://seleniumbase.io/",
     },
     platforms=["Windows", "Linux", "Mac OS-X"],
     author="Michael Mintz",
