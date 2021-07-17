@@ -21,7 +21,7 @@ try:
             long_description_lines.append(line)
     long_description = "\n".join(long_description_lines)
 except IOError:
-    long_description = "An optimized pyvirtualdisplay for SeleniumBase."
+    long_description = "A customized pyvirtualdisplay for SeleniumBase."
 about = {}
 # Get the package version from the sbvirtualdisplay/__version__.py file
 with open(os.path.join(
@@ -63,7 +63,7 @@ if sys.argv[-1] == "publish":
 setup(
     name="sbvirtualdisplay",
     version=about["__version__"],
-    description="An optimized pyvirtualdisplay for SeleniumBase.",
+    description="A customized pyvirtualdisplay for SeleniumBase.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/mdmintz/sbVirtualDisplay",
