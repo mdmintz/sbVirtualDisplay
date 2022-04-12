@@ -24,9 +24,9 @@ except IOError:
     long_description = "A customized pyvirtualdisplay for SeleniumBase."
 about = {}
 # Get the package version from the sbvirtualdisplay/__version__.py file
-with open(os.path.join(
-    this_dir, "sbvirtualdisplay", "__version__.py"
-), "rb") as f:
+with open(
+    os.path.join(this_dir, "sbvirtualdisplay", "__version__.py"), "rb"
+) as f:
     exec(f.read().decode("utf-8"), about)
 
 if sys.argv[-1] == "publish":
@@ -38,21 +38,24 @@ if sys.argv[-1] == "publish":
     reply = str(input_method(confirm_text)).lower().strip()
     if reply == "yes":
         print("\n*** Checking code health with flake8:\n")
-        os.system("python -m pip install 'flake8==3.9.2'")
+        os.system("python -m pip install 'flake8==4.0.1'")
         flake8_status = os.system("flake8 --exclude=temp")
         if flake8_status != 0:
             print("\nWARNING! Fix flake8 issues before publishing to PyPI!\n")
             sys.exit()
         else:
             print("*** No flake8 issues detected. Continuing...")
-        print("\n*** Rebuilding distribution packages: ***\n")
+        print("\n*** Removing existing distribution packages: ***\n")
         os.system("rm -f dist/*.egg; rm -f dist/*.tar.gz; rm -f dist/*.whl")
         os.system("rm -rf build/bdist.*; rm -rf build/lib")
-        os.system("python setup.py sdist bdist_wheel")  # Create new tar/wheel
+        print("\n*** Installing build: *** (Required for PyPI uploads)\n")
+        os.system("python -m pip install --upgrade 'build>=0.7.0'")
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'twine>=1.15.0'")
+        os.system("python -m pip install --upgrade 'twine>=4.0.0'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'tqdm>=4.61.2'")
+        os.system("python -m pip install --upgrade 'tqdm>=4.64.0'")
+        print("\n*** Rebuilding distribution packages: ***\n")
+        os.system("python -m build")  # Create new tar/wheel
         print("\n*** Publishing The Release to PyPI: ***\n")
         os.system("python -m twine upload dist/*")  # Requires ~/.pypirc Keys
         print("\n*** The Release was PUBLISHED SUCCESSFULLY to PyPI! :) ***\n")
@@ -111,28 +114,35 @@ setup(
         "Topic :: Utilities",
     ],
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
-    install_requires=[
-    ],
+    install_requires=[],
     extras_require={
         # pip install -e .[coverage]
+        # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
-            "coverage==5.5",
-            "pytest-cov==2.12.1",
+            'coverage==5.5;python_version<"3.6"',
+            'coverage==6.2;python_version>="3.6" and python_version<"3.7"',
+            'coverage==6.3.2;python_version>="3.7"',
+            'pytest-cov==2.12.1;python_version<"3.6"',
+            'pytest-cov==3.0.0;python_version>="3.6"',
         ],
         # pip install -e .[flake]
+        # Usage: flake8
         "flake": [
             'flake8==3.7.9;python_version<"3.5"',
-            'flake8==3.9.2;python_version>="3.5"',
+            'flake8==3.9.2;python_version>="3.5" and python_version<"3.6"',
+            'flake8==4.0.1;python_version>="3.6"',
+            "mccabe==0.6.1",
             'pyflakes==2.1.1;python_version<"3.5"',
-            'pyflakes==2.3.1;python_version>="3.5"',
+            'pyflakes==2.3.1;python_version>="3.5" and python_version<"3.6"',
+            'pyflakes==2.4.0;python_version>="3.6"',
             'pycodestyle==2.5.0;python_version<"3.5"',
-            'pycodestyle==2.7.0;python_version>="3.5"',
+            'pycodestyle==2.7.0;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
+            'pycodestyle==2.8.0;python_version>="3.6"',
         ],
     },
     packages=[
         "sbvirtualdisplay",
     ],
     include_package_data=True,
-    entry_points={
-    },
+    entry_points={},
 )
