@@ -72,6 +72,7 @@ geckodriver
 msedgedriver
 operadriver
 MicrosoftWebDriver.exe
+headless_ie_selenium.exe
 IEDriverServer.exe
 chromedriver.exe
 geckodriver.exe
@@ -124,15 +125,21 @@ images_exported
 # Cookies
 saved_cookies
 
+# Recordings
+recordings
+
 # Automated Visual Testing
 visual_baseline
 
-# MkDocs
+# MkDocs WebSite Generator
 site/*
-docs/*.md
-docs/*/*.md
-docs/*/*/*.md
-docs/*/*/*/*.md
+mkdocs_build/*.md
+mkdocs_build/*/*.md
+mkdocs_build/*/*/*.md
+mkdocs_build/*/*/*/*.md
+
+# macOS system files
+.DS_Store
 
 # Other
 selenium-server-standalone.jar
