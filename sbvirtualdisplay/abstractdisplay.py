@@ -12,10 +12,7 @@ USED_DISPLAY_NR_LIST = []
 
 
 class AbstractDisplay(EasyProcess):
-    """
-    Common parent for Xvfb and Xephyr
-    """
-
+    """Common parent for Xvfb and Xephyr"""
     def __init__(self, use_xauth=False):
         mutex.acquire()
         try:
@@ -63,7 +60,6 @@ class AbstractDisplay(EasyProcess):
         on:
          * True -> set $DISPLAY to virtual screen
          * False -> set $DISPLAY to original screen
-
         :param on: bool
         """
         d = self.new_display_var if on else self.old_display_var
@@ -75,27 +71,22 @@ class AbstractDisplay(EasyProcess):
     def start(self):
         """
         start display
-
         :rtype: self
         """
         if self.use_xauth:
             self._setup_xauth()
         EasyProcess.start(self)
-
         # https://github.com/ponty/PyVirtualDisplay/issues/2
         # https://github.com/ponty/PyVirtualDisplay/issues/14
         self.old_display_var = os.environ.get("DISPLAY", None)
-
         self.redirect_display(True)
         # wait until X server is active
-        # TODO: better method
         time.sleep(0.1)
         return self
 
     def stop(self):
         """
         stop display
-
         :rtype: self
         """
         self.redirect_display(False)
@@ -105,9 +96,7 @@ class AbstractDisplay(EasyProcess):
         return self
 
     def _setup_xauth(self):
-        """
-        Set up the Xauthority file and the XAUTHORITY environment variable.
-        """
+        """Set up the Xauthority file & the XAUTHORITY environment variable."""
         handle, filename = tempfile.mkstemp(
             prefix="PyVirtualDisplay.", suffix=".Xauthority"
         )
@@ -123,9 +112,7 @@ class AbstractDisplay(EasyProcess):
         xauth.call("add", self.new_display_var, ".", cookie)
 
     def _clear_xauth(self):
-        """
-        Clear the Xauthority file and restore the environment variables.
-        """
+        """Clear the Xauthority file and restore the environment variables."""
         os.remove(self._xauth_filename)
         for varname in ["AUTHFILE", "XAUTHORITY"]:
             if self._old_xauth[varname] is None:
