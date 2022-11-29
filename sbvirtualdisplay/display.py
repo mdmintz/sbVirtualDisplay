@@ -11,7 +11,6 @@ from sbvirtualdisplay.xvnc import XvncDisplay
 class Display(AbstractDisplay):
     """
     Common class
-
     :param color_depth: [8, 16, 24, 32]
     :param size: screen size (width,height)
     :param bgcolor: background color ['black' or 'white']
@@ -19,7 +18,6 @@ class Display(AbstractDisplay):
     :param backend: 'xvfb', 'xvnc' or 'xephyr', ignores ``visible``
     :param xauth: If a Xauthority file should be created.
     """
-
     def __init__(
         self,
         backend=None,

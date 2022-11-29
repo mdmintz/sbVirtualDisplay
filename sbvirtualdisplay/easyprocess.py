@@ -36,7 +36,6 @@ Program install error! """
 
 
 class EasyProcessCheckInstalledError(Exception):
-
     """This exception is raised when a process run by check() returns
     a non-zero exit status or OSError is raised.
     """
@@ -62,7 +61,6 @@ class EasyProcessCheckInstalledError(Exception):
 
 
 class EasyProcess(object):
-
     """
     .. module:: easyprocess
 
@@ -71,24 +69,20 @@ class EasyProcess(object):
     shell is not supported (shell=False)
 
     .. warning::
-
       unicode is supported only for string list command (Python2.x)
       (check :mod:`shlex` for more information)
-
     :param cmd: string ('ls -l') or list of strings (['ls','-l'])
     :param cwd: working directory
     :param use_temp_files: use temp files instead of pipes for
                            stdout and stderr,
                            pipes can cause deadlock in some cases
                            (see unit tests)
-
     :param env: If *env* is not ``None``, it must be a mapping that defines
                 the environment variables for the new process;
                 these are used instead of inheriting the current
                 process' environment, which is the default behavior.
                 (check :mod:`subprocess`  for more information)
     """
-
     def __init__(
         self,
         cmd,
@@ -145,7 +139,6 @@ class EasyProcess(object):
     def pid(self):
         """
         PID (:attr:`subprocess.Popen.pid`)
-
         :rtype: int
         """
         if self.popen:
@@ -155,7 +148,6 @@ class EasyProcess(object):
     def return_code(self):
         """
         returncode (:attr:`subprocess.Popen.returncode`)
-
         :rtype: int
         """
         if self.popen:
@@ -165,10 +157,8 @@ class EasyProcess(object):
         """Run command with arguments. Wait for command to complete. If the
         exit code was as expected and there is no exception then return,
         otherwise raise EasyProcessError.
-
         :param return_code: int, expected return code
         :rtype: self
-
         """
         ret = self.call().return_code
         ok = ret == return_code
@@ -181,14 +171,11 @@ class EasyProcess(object):
 
     def check_installed(self):
         """Used for testing if program is installed.
-
         Run command with arguments. Wait for command to complete.
         If OSError raised, then raise :class:`EasyProcessCheckInstalledError`
-        with information about program installation
-
+        with information about program installation.
         :param return_code: int, expected return code
         :rtype: self
-
         """
         try:
             self.call()
@@ -198,14 +185,11 @@ class EasyProcess(object):
 
     def call(self, timeout=None):
         """Run command with arguments. Wait for command to complete.
-
         same as:
          1. :meth:`start`
          2. :meth:`wait`
          3. :meth:`stop`
-
         :rtype: self
-
         """
         self.start().wait(timeout=timeout)
         if self.is_alive():
@@ -214,25 +198,19 @@ class EasyProcess(object):
 
     def start(self):
         """start command in background and does not wait for it.
-
         :rtype: self
-
         """
         if self.is_started:
             raise EasyProcessError(self, "process was started twice!")
-
         if self.use_temp_files:
             self._stdout_file = tempfile.TemporaryFile(prefix="stdout_")
             self._stderr_file = tempfile.TemporaryFile(prefix="stderr_")
             stdout = self._stdout_file
             stderr = self._stderr_file
-
         else:
             stdout = subprocess.PIPE
             stderr = subprocess.PIPE
-
         cmd = list(map(uniencode, self.cmd))
-
         try:
             self.popen = subprocess.Popen(
                 cmd,
@@ -252,7 +230,6 @@ class EasyProcess(object):
     def is_alive(self):
         """
         poll process using :meth:`subprocess.Popen.poll`
-
         :rtype: bool
         """
         if self.popen:
@@ -262,16 +239,12 @@ class EasyProcess(object):
 
     def wait(self, timeout=None):
         """Wait for command to complete.
-
         Timeout:
          - discussion:
            http://stackoverflow.com/questions/1191374/subprocess-with-timeout
          - implementation: threading
-
         :rtype: self
-
         """
-
         if timeout is not None:
             if not self._thread:
                 self._thread = threading.Thread(target=self._wait4process)
@@ -307,17 +280,14 @@ class EasyProcess(object):
                         if self._stop_thread:
                             return
                         time.sleep(POLL_TIME)
-
                 else:
                     # wait() blocks process, timeout not possible
                     self.popen.wait()
-
                 self._outputs_processed = True
                 self._stdout_file.seek(0)
                 self._stderr_file.seek(0)
                 self.stdout = self._stdout_file.read()
                 self.stderr = self._stderr_file.read()
-
                 self._stdout_file.close()
                 self._stderr_file.close()
             else:
@@ -329,7 +299,6 @@ class EasyProcess(object):
                 # self.popen.wait()
                 # self.stdout = self.popen.stdout.read()
                 # self.stderr = self.popen.stderr.read()
-
                 # communicate() blocks process, timeout not possible
                 self._outputs_processed = True
                 (self.stdout, self.stderr) = self.popen.communicate()
@@ -342,13 +311,10 @@ class EasyProcess(object):
 
     def stop(self):
         """Kill process and wait for command to complete.
-
         same as:
          1. :meth:`sendstop`
          2. :meth:`wait`
-
         :rtype: self
-
         """
         return self.sendstop().wait()
 
@@ -356,7 +322,6 @@ class EasyProcess(object):
         """
         Kill process (:meth:`subprocess.Popen.terminate`).
         Do not wait for command to complete.
-
         :rtype: self
         """
         if not self.is_started:
@@ -366,7 +331,6 @@ class EasyProcess(object):
         if self.popen:
             if self.is_alive():
                 log.debug("process is active -> sending SIGTERM")
-
                 try:
                     try:
                         self.popen.terminate()
@@ -374,22 +338,18 @@ class EasyProcess(object):
                         os.kill(self.popen.pid, signal.SIGKILL)
                 except OSError as oserror:
                     log.debug("exception in terminate:%s", oserror)
-
             else:
                 log.debug("process was already stopped")
         else:
             log.debug("process was not started")
-
         return self
 
     def sleep(self, sec):
         """
         sleeping (same as :func:`time.sleep`)
-
         :rtype: self
         """
         time.sleep(sec)
-
         return self
 
     def wrap(self, func, delay=0):
@@ -399,12 +359,9 @@ class EasyProcess(object):
          2. call func, save result
          3. stop process
          4. returns result
-
         similar to :keyword:`with` statement
-
         :rtype:
         """
-
         def wrapped():
             self.start()
             if delay:
@@ -419,7 +376,6 @@ class EasyProcess(object):
             finally:
                 self.stop()
             return x
-
         return wrapped
 
     def __enter__(self):
@@ -433,8 +389,8 @@ class EasyProcess(object):
 
 
 def extract_version(txt):
-    """This function tries to extract the version from the help text of any
-    program."""
+    """This function tries to extract the version
+    from the help text of any program."""
     words = txt.replace(",", " ").split()
     version = None
     for x in reversed(words):

@@ -1,6 +1,7 @@
 """
+*** sbvirtualdisplay ***
 A modified version of pyvirtualdisplay for optimized SeleniumBase performance.
-(Python 2.7+ and Python 3.5+)
+(Python 2.7+ and Python 3.6+)
 """
 
 from setuptools import setup
@@ -38,8 +39,8 @@ if sys.argv[-1] == "publish":
     reply = str(input_method(confirm_text)).lower().strip()
     if reply == "yes":
         print("\n*** Checking code health with flake8:\n")
-        os.system("python -m pip install 'flake8==4.0.1'")
-        flake8_status = os.system("flake8 --exclude=temp")
+        os.system("python -m pip install 'flake8==5.0.4'")
+        flake8_status = os.system("flake8 --exclude=recordings,temp")
         if flake8_status != 0:
             print("\nWARNING! Fix flake8 issues before publishing to PyPI!\n")
             sys.exit()
@@ -49,11 +50,11 @@ if sys.argv[-1] == "publish":
         os.system("rm -f dist/*.egg; rm -f dist/*.tar.gz; rm -f dist/*.whl")
         os.system("rm -rf build/bdist.*; rm -rf build/lib")
         print("\n*** Installing build: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'build>=0.7.0'")
+        os.system("python -m pip install --upgrade 'build>=0.9.0'")
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'twine>=4.0.0'")
+        os.system("python -m pip install --upgrade 'twine>=4.0.1'")
         print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'tqdm>=4.64.0'")
+        os.system("python -m pip install --upgrade tqdm")
         print("\n*** Rebuilding distribution packages: ***\n")
         os.system("python -m build")  # Create new tar/wheel
         print("\n*** Publishing The Release to PyPI: ***\n")
@@ -98,11 +99,13 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Topic :: Internet",
         "Topic :: Scientific/Engineering",
         "Topic :: Software Development",
@@ -113,7 +116,7 @@ setup(
         "Topic :: Software Development :: Testing :: Traffic Generation",
         "Topic :: Utilities",
     ],
-    python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*",
+    python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*",  # noqa: E501
     install_requires=[],
     extras_require={
         # pip install -e .[coverage]
@@ -121,23 +124,21 @@ setup(
         "coverage": [
             'coverage==5.5;python_version<"3.6"',
             'coverage==6.2;python_version>="3.6" and python_version<"3.7"',
-            'coverage==6.3.2;python_version>="3.7"',
+            'coverage==6.5.0;python_version>="3.7"',
             'pytest-cov==2.12.1;python_version<"3.6"',
-            'pytest-cov==3.0.0;python_version>="3.6"',
+            'pytest-cov==4.0.0;python_version>="3.6"',
         ],
-        # pip install -e .[flake]
+        # pip install -e .[flake8]
         # Usage: flake8
-        "flake": [
-            'flake8==3.7.9;python_version<"3.5"',
-            'flake8==3.9.2;python_version>="3.5" and python_version<"3.6"',
-            'flake8==4.0.1;python_version>="3.6"',
-            "mccabe==0.6.1",
-            'pyflakes==2.1.1;python_version<"3.5"',
-            'pyflakes==2.3.1;python_version>="3.5" and python_version<"3.6"',
-            'pyflakes==2.4.0;python_version>="3.6"',
-            'pycodestyle==2.5.0;python_version<"3.5"',
-            'pycodestyle==2.7.0;python_version>="3.5" and python_version<"3.6"',  # noqa: E501
-            'pycodestyle==2.8.0;python_version>="3.6"',
+        "flake8": [
+            'flake8==3.7.9;python_version<"3.6"',
+            'flake8==5.0.4;python_version>="3.6"',
+            'mccabe==0.6.1;python_version<"3.6"',
+            'mccabe==0.7.0;python_version>="3.6"',
+            'pyflakes==2.1.1;python_version<"3.6"',
+            'pyflakes==2.5.0;python_version>="3.6"',
+            'pycodestyle==2.5.0;python_version<"3.6"',
+            'pycodestyle==2.9.1;python_version>="3.6"',
         ],
     },
     packages=[
