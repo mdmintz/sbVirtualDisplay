@@ -95,6 +95,15 @@ class AbstractDisplay(EasyProcess):
             self._clear_xauth()
         return self
 
+    def __enter__(self):
+        """Used by the :keyword:`with` statement"""
+        self.start()
+        return self
+
+    def __exit__(self, *exc_info):
+        """Used by the :keyword:`with` statement"""
+        self.stop()
+
     def _setup_xauth(self):
         """Set up the Xauthority file & the XAUTHORITY environment variable."""
         handle, filename = tempfile.mkstemp(
