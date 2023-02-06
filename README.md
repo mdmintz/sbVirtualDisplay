@@ -19,7 +19,7 @@ display.stop()
 
 ```python
 with Display(visible=0, size=(1440, 1880)):
-	# Run browser tests in a headless environment
+    # Run browser tests in a headless environment
     ...
 ```
 
