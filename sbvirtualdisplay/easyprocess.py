@@ -1,5 +1,4 @@
 """Easy to use python subprocess interface."""
-
 from sbvirtualdisplay.unicodeutil import (
     split_command,
     unidecode,
@@ -37,8 +36,7 @@ Program install error! """
 
 class EasyProcessCheckInstalledError(Exception):
     """This exception is raised when a process run by check() returns
-    a non-zero exit status or OSError is raised.
-    """
+    a non-zero exit status or OSError is raised."""
 
     def __init__(self, easy_process):
         self.easy_process = easy_process
@@ -66,11 +64,6 @@ class EasyProcess(object):
 
     simple interface for :mod:`subprocess`
 
-    shell is not supported (shell=False)
-
-    .. warning::
-      unicode is supported only for string list command (Python2.x)
-      (check :mod:`shlex` for more information)
     :param cmd: string ('ls -l') or list of strings (['ls','-l'])
     :param cwd: working directory
     :param use_temp_files: use temp files instead of pipes for
@@ -111,7 +104,7 @@ class EasyProcess(object):
         self.cwd = cwd
         cmd = split_command(cmd)
         self.cmd = cmd
-        self.cmd_as_string = " ".join(self.cmd)  # TODO: not perfect
+        self.cmd_as_string = " ".join(self.cmd)
         log.debug('param: "%s" ', self.cmd_param)
         log.debug("command: %s", self.cmd)
         log.debug("joined command: %s", self.cmd_as_string)
@@ -238,13 +231,6 @@ class EasyProcess(object):
             return False
 
     def wait(self, timeout=None):
-        """Wait for command to complete.
-        Timeout:
-         - discussion:
-           http://stackoverflow.com/questions/1191374/subprocess-with-timeout
-         - implementation: threading
-        :rtype: self
-        """
         if timeout is not None:
             if not self._thread:
                 self._thread = threading.Thread(target=self._wait4process)
@@ -257,7 +243,6 @@ class EasyProcess(object):
                 self.timeout_happened or self._thread.isAlive()
             )
         else:
-            # no timeout and no existing thread
             self._wait4process()
         return self
 
@@ -281,7 +266,6 @@ class EasyProcess(object):
                             return
                         time.sleep(POLL_TIME)
                 else:
-                    # wait() blocks process, timeout not possible
                     self.popen.wait()
                 self._outputs_processed = True
                 self._stdout_file.seek(0)
@@ -291,15 +275,6 @@ class EasyProcess(object):
                 self._stdout_file.close()
                 self._stderr_file.close()
             else:
-                # This will deadlock when using stdout=PIPE and/or stderr=PIPE
-                # and the child process generates enough output to a pipe such
-                # that it blocks waiting for the OS pipe buffer
-                # to accept more data.
-                # Use communicate() to avoid that.
-                # self.popen.wait()
-                # self.stdout = self.popen.stdout.read()
-                # self.stderr = self.popen.stderr.read()
-                # communicate() blocks process, timeout not possible
                 self._outputs_processed = True
                 (self.stdout, self.stderr) = self.popen.communicate()
             log.debug("process has ended")
@@ -310,12 +285,6 @@ class EasyProcess(object):
             log.debug("stderr=%s", self.stderr)
 
     def stop(self):
-        """Kill process and wait for command to complete.
-        same as:
-         1. :meth:`sendstop`
-         2. :meth:`wait`
-        :rtype: self
-        """
         return self.sendstop().wait()
 
     def sendstop(self):
@@ -345,10 +314,6 @@ class EasyProcess(object):
         return self
 
     def sleep(self, sec):
-        """
-        sleeping (same as :func:`time.sleep`)
-        :rtype: self
-        """
         time.sleep(sec)
         return self
 

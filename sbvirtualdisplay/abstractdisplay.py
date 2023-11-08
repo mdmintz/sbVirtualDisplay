@@ -76,8 +76,6 @@ class AbstractDisplay(EasyProcess):
         if self.use_xauth:
             self._setup_xauth()
         EasyProcess.start(self)
-        # https://github.com/ponty/PyVirtualDisplay/issues/2
-        # https://github.com/ponty/PyVirtualDisplay/issues/14
         self.old_display_var = os.environ.get("DISPLAY", None)
         self.redirect_display(True)
         # wait until X server is active

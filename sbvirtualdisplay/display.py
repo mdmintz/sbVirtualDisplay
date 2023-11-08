@@ -1,7 +1,5 @@
-"""
-This module contains a customized version of pyvirtualdisplay.
-These helper methods SHOULD NOT be called directly from tests.
-"""
+"""This module contains a customized version of pyvirtualdisplay.
+These helper methods SHOULD NOT be called directly from tests."""
 from sbvirtualdisplay.abstractdisplay import AbstractDisplay
 from sbvirtualdisplay.xephyr import XephyrDisplay
 from sbvirtualdisplay.xvfb import XvfbDisplay

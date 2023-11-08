@@ -1,9 +1,6 @@
-"""
-*** sbvirtualdisplay ***
+"""*** sbvirtualdisplay ***
 A modified version of pyvirtualdisplay for optimized SeleniumBase performance.
-(Python 2.7+ and Python 3.6+)
-"""
-
+(Python 3.7+)"""
 from setuptools import setup
 import os
 import sys
@@ -33,13 +30,11 @@ with open(
 if sys.argv[-1] == "publish":
     reply = None
     input_method = input
-    if not sys.version_info[0] >= 3:
-        input_method = raw_input  # noqa: F821
     confirm_text = ">>> Confirm release PUBLISH to PyPI? (yes/no): "
     reply = str(input_method(confirm_text)).lower().strip()
     if reply == "yes":
         print("\n*** Checking code health with flake8:\n")
-        os.system("python -m pip install 'flake8==5.0.4'")
+        os.system("python -m pip install 'flake8==6.1.0'")
         flake8_status = os.system("flake8 --exclude=recordings,temp")
         if flake8_status != 0:
             print("\nWARNING! Fix flake8 issues before publishing to PyPI!\n")
@@ -50,11 +45,23 @@ if sys.argv[-1] == "publish":
         os.system("rm -f dist/*.egg; rm -f dist/*.tar.gz; rm -f dist/*.whl")
         os.system("rm -rf build/bdist.*; rm -rf build/lib")
         print("\n*** Installing build: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'build>=0.9.0'")
+        os.system("python -m pip install --upgrade 'build'")
+        print("\n*** Installing pkginfo: *** (Required for PyPI uploads)\n")
+        os.system("python -m pip install --upgrade 'pkginfo'")
+        print("\n*** Installing readme-renderer: *** (For PyPI uploads)\n")
+        os.system("python -m pip install --upgrade 'readme-renderer'")
+        print("\n*** Installing jaraco.classes: *** (For PyPI uploads)\n")
+        os.system("python -m pip install --upgrade 'jaraco.classes'")
+        print("\n*** Installing more-itertools: *** (For PyPI uploads)\n")
+        os.system("python -m pip install --upgrade 'more-itertools'")
+        print("\n*** Installing zipp: *** (Required for PyPI uploads)\n")
+        os.system("python -m pip install --upgrade 'zipp'")
+        print("\n*** Installing importlib-metadata: *** (For PyPI uploads)\n")
+        os.system("python -m pip install --upgrade 'importlib-metadata'")
+        print("\n*** Installing keyring, requests-toolbelt: *** (For PyPI)\n")
+        os.system("python -m pip install --upgrade keyring requests-toolbelt")
         print("\n*** Installing twine: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade 'twine>=4.0.1'")
-        print("\n*** Installing tqdm: *** (Required for PyPI uploads)\n")
-        os.system("python -m pip install --upgrade tqdm")
+        os.system("python -m pip install --upgrade 'twine'")
         print("\n*** Rebuilding distribution packages: ***\n")
         os.system("python -m build")  # Create new tar/wheel
         print("\n*** Publishing The Release to PyPI: ***\n")
@@ -98,8 +105,6 @@ setup(
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
@@ -116,29 +121,27 @@ setup(
         "Topic :: Software Development :: Testing :: Traffic Generation",
         "Topic :: Utilities",
     ],
-    python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*",  # noqa: E501
+    python_requires=">=3.7",
     install_requires=[],
     extras_require={
         # pip install -e .[coverage]
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
-            'coverage==5.5;python_version<"3.6"',
-            'coverage==6.2;python_version>="3.6" and python_version<"3.7"',
-            'coverage==6.5.0;python_version>="3.7"',
-            'pytest-cov==2.12.1;python_version<"3.6"',
-            'pytest-cov==4.0.0;python_version>="3.6"',
+            'coverage==7.2.7;python_version<"3.8"',
+            'coverage==7.3.2;python_version>="3.8"',
+            'pytest-cov==4.1.0',
         ],
+
         # pip install -e .[flake8]
         # Usage: flake8
         "flake8": [
-            'flake8==3.7.9;python_version<"3.6"',
-            'flake8==5.0.4;python_version>="3.6"',
-            'mccabe==0.6.1;python_version<"3.6"',
-            'mccabe==0.7.0;python_version>="3.6"',
-            'pyflakes==2.1.1;python_version<"3.6"',
-            'pyflakes==2.5.0;python_version>="3.6"',
-            'pycodestyle==2.5.0;python_version<"3.6"',
-            'pycodestyle==2.9.1;python_version>="3.6"',
+            'flake8==5.0.4;python_version<"3.9"',
+            'flake8==6.1.0;python_version>="3.9"',
+            "mccabe==0.7.0",
+            'pyflakes==2.5.0;python_version<"3.9"',
+            'pyflakes==3.1.0;python_version>="3.9"',
+            'pycodestyle==2.9.1;python_version<"3.9"',
+            'pycodestyle==2.11.1;python_version>="3.9"',
         ],
     },
     packages=[
