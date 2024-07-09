@@ -1,9 +1,12 @@
 Dual License of MIT or BSD 2-Clause "Simplified" License
 
 BSD License from the original "pyvirtualdisplay".
-Link: https://github.com/ponty/PyVirtualDisplay/blob/master/LICENSE.txt
+Link: github.com/ponty/PyVirtualDisplay/blob/master/LICENSE.txt
+Fork origin: pypi.org/project/PyVirtualDisplay/2.2/
 
 MIT License for any new code in "sbvirtualdisplay".
+
+(Use tools such as "git diff" to understand changes.)
 
 ----
 
