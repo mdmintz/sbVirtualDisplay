@@ -1,6 +1,6 @@
 """*** sbvirtualdisplay ***
 A modified version of pyvirtualdisplay for optimized SeleniumBase performance.
-(Python 3.7+)"""
+(Python 3.8+)"""
 from setuptools import setup
 import os
 import sys
@@ -77,6 +77,7 @@ setup(
     description="A customized pyvirtualdisplay for SeleniumBase.",
     long_description=long_description,
     long_description_content_type="text/markdown",
+    keywords="Xvfb Xephyr Virtual Display Linux SeleniumBase",
     url="https://github.com/mdmintz/sbVirtualDisplay",
     project_urls={
         "Changelog": "https://github.com/mdmintz/sbVirtualDisplay/releases",
@@ -105,7 +106,6 @@ setup(
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
@@ -122,27 +122,28 @@ setup(
         "Topic :: Software Development :: Testing :: Traffic Generation",
         "Topic :: Utilities",
     ],
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     install_requires=[],
     extras_require={
         # pip install -e .[coverage]
         # Usage: coverage run -m pytest; coverage html; coverage report
         "coverage": [
-            'coverage==7.2.7;python_version<"3.8"',
-            'coverage==7.3.2;python_version>="3.8"',
-            'pytest-cov==4.1.0',
+            'coverage>=7.6.1;python_version<"3.9"',
+            'coverage>=7.6.9;python_version>="3.9"',
+            'pytest-cov>=5.0.0;python_version<"3.9"',
+            'pytest-cov>=6.0.0;python_version>="3.9"',
         ],
 
         # pip install -e .[flake8]
         # Usage: flake8
         "flake8": [
             'flake8==5.0.4;python_version<"3.9"',
-            'flake8==6.1.0;python_version>="3.9"',
+            'flake8==7.1.1;python_version>="3.9"',
             "mccabe==0.7.0",
             'pyflakes==2.5.0;python_version<"3.9"',
-            'pyflakes==3.1.0;python_version>="3.9"',
+            'pyflakes==3.2.0;python_version>="3.9"',
             'pycodestyle==2.9.1;python_version<"3.9"',
-            'pycodestyle==2.11.1;python_version>="3.9"',
+            'pycodestyle==2.12.1;python_version>="3.9"',
         ],
     },
     packages=[
