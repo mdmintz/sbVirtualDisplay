@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=70.2.0", "wheel>=0.44.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sbvirtualdisplay"
+readme = "README.md"
+dynamic = [
+    "urls",
+    "version",
+    "license",
+    "authors",
+    "scripts",
+    "keywords",
+    "classifiers",
+    "description",
+    "maintainers",
+    "entry-points",
+    "dependencies",
+    "requires-python",
+    "optional-dependencies",
+]
+
+[tool.setuptools]
+packages = ["sbvirtualdisplay"]
+
+[flake8]
+ignore = ["W503"]
+
+[nosetests]
+nocapture = ["1"]
+logging-level = ["INFO"]
